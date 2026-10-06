@@ -4,8 +4,6 @@ Adatanalitikai és üzleti intelligencia (BI) projekt, amely az ASOS termékkata
 
 A projekt bevezeti a mérethiányok miatti **„Kieső / Fantom Bevétel” (Lost / Phantom Revenue)** fogalmát, valamint a márkákat árazási stratégiájuk és készlet-elérhetőségük alapján szegmentálja egy vizuális mátrixban.
 
----
-
 ## 📌 A projekt áttekintése
 
 A divat- és e-kereskedelmi szektorban a hiányzó méretek jelentős bevételkiesést okoznak anélkül, hogy a termék teljesen lekerülne az oldalról. A projekt célja az ASOS nyers termékadatainak tisztítása, a márkák kinyerése a szöveges leírásokból, a készlethiány mértékének számszerűsítése és a legfontosabb szűk keresztmetszetek (bottlenecks) feltárása.
@@ -17,35 +15,40 @@ A divat- és e-kereskedelmi szektorban a hiányzó méretek jelentős bevételki
 3. **Kieső bevétel becslése**: A mérethiányok miatti elméleti bevételkiesés számszerűsítése ($\text{Ár} \times \text{Hiányzó méretek száma}$).
 4. **Márkastratégia mátrix**: Az átlagos termékár és a készlethiány-arány összevetése a magas kockázatú / kiugróan jövedelmező márkák beazonosítására.
 
----
-
 ## 📊 Metodológia és számítások
 
 ### 1. Adatelőkészítés és márka-standardizálás
+
 * A nem numerikus vagy hiányzó árak szűrése (`pd.to_numeric(..., errors='coerce')`).
 * Márkanevek kinyerése a termékleírásokból a `"by [Márkanév]"` mintázat alapján, valamint a gyakori rövidítések egységesítése (pl. `New` $\rightarrow$ `New look`, `River` $\rightarrow$ `River Island`, `TopshopWelcome` $\rightarrow$ `Topshop`).
 * A ritka, 5-nél kevesebb termékkel rendelkező márkák kiszűrése a reprezentatív eredmények érdekében.
 
 ### 2. Készlethiány és kieső bevétel
+
 Minden termék esetében:
+
 * **Összes méret**: A vesszővel elválasztott méretlista darabszáma.
 * **Hiányzó méretek száma (`Stockout_Count`)**: Az `'Out of stock'` címkék előfordulása.
 * **Készlethiány-arány (`Stockout_Rate`)**:
-  
-  $$\text{Stockout Rate} = \frac{\text{Stockout\_Count}}{\text{Összes méret}}$$
+
+  $$
+  \text{Stockout Rate} = \frac{\text{Stockout\_Count}}{\text{Összes méret}}
+  $$
 
 * **Kieső bevételi potenciál (`Lost_Revenue`)**:
-  
-  $$\text{Lost Revenue} = \text{Ár} \times \text{Stockout\_Count}$$
+
+  $$
+  \text{Lost Revenue} = \text{Ár} \times \text{Stockout\_Count}
+  $$
 
 ### 3. Márkastratégia elemzés
+
 Csoportosítás márkák szerint (minimum 10 termékkel rendelkező márkák):
+
 * Átlagos ár (`price`).
 * Átlagos készlethiány-arány (`Stockout_Rate`).
 * Összesített kieső bevétel (a buborékdiagramon a pontok mérete).
 * Kiemelt szegmens: Magas átlagár ($\text{Ár} > 40$) és magas készlethiány-arány ($\text{Stockout Rate} > 0.40$).
-
----
 
 ## 💾 Az adathalmaz kezelése (Nagy fájlok a GitHubon)
 
@@ -74,8 +77,6 @@ A GitHub alapesetben nem engedélyezi a **100 MB feletti fájlok** feltöltésé
      df = pd.read_csv('products_asos.csv.zip', compression='zip', on_bad_lines='skip')
      ```
 
----
-
 ## 🛠️ Szükséges csomagok és telepítés
 
 * **Környezet:** Python 3.8+
@@ -85,11 +86,10 @@ A GitHub alapesetben nem engedélyezi a **100 MB feletti fájlok** feltöltésé
   * `seaborn` – Statisztikai adatvizualizáció
 
 Telepítés terminálból:
+
 ```bash
 pip install pandas matplotlib seaborn
 ```
-
----
 
 ## 📂 Mappaszerkezet
 
@@ -101,12 +101,10 @@ pip install pandas matplotlib seaborn
 ```
 
 > **Tipp a `.gitignore` fájlhoz:** Hozz létre egy `.gitignore` nevű fájlt a mappa gyökerében, és írd bele a következő sort, hogy a Git ne próbálja meg feltölteni a nagy méretű CSV-t:
-> ```text
+> ```gitignore
 > products_asos.csv
 > *.csv
 > ```
-
----
 
 ## 🚀 Futtatás menete
 
@@ -122,8 +120,6 @@ pip install pandas matplotlib seaborn
    ```bash
    jupyter notebook python_project.ipynb
    ```
-
----
 
 ## 📈 Főbb eredmények és üzleti tanulságok
 
